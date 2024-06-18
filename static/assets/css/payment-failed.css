@@ -1,0 +1,54 @@
+#paymentfailed-container {
+    width: 100%;
+    padding: 50px 20px 20px 20px;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    color: var(--headingcolor1);
+    /* background-color: var(--bgcolor4); */
+}
+
+#paymentfailed-container>div {
+    /* width: 600px; */
+    /* border: 1px solid; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+    padding: 40px;
+    background-color: var(--color3);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+#paymentfailed-container>div>i {
+    font-size: 90px;
+    color: var(--color8);
+}
+
+#paymentfailed-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--color4);
+}
+
+
+#paymentfailed-container button {
+    padding: 10px 20px;
+    background-color: var(--color1);
+    color: var(--color3);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#paymentfailed-container button:hover {
+    background-color: var(--color2);
+}

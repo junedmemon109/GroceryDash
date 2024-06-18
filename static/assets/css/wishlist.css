@@ -1,0 +1,219 @@
+.cart {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
+}
+
+.cart-products-heading {
+    width: 80%;
+    height: 60px;
+    display: grid;
+    grid-template-columns: 47.5% 12.5% 12.5% 15% 12.5%;
+    justify-items: center;
+    border-radius: 20px;
+    background-color: var(--bgcolor3);
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--headingcolor1);
+    padding: 0 20px;
+}
+
+.cart-products {
+    width: 80%;
+    height: 90px;
+    display: grid;
+    grid-template-columns: 47.5% 12.5% 12.5% 15% 12.5%;
+    justify-items: center;
+    border-bottom: 1px solid var(--bordercolor1);
+    align-items: center;
+    font-size: 16px;
+    color: var(--color5);
+    padding: 0 20px;
+}
+
+
+#product-name-heading,
+.product {
+    justify-self: start;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.product-stock-true {
+    color: var(--color1);
+}
+
+.product-stock-false {
+    color: rgb(243, 85, 85);
+}
+
+.delete-product,
+.delete-wishlist-product {
+    height: 30px;
+    width: 30px;
+    color: rgb(238, 111, 111);
+    background: none;
+    border: 1px solid rgb(238, 111, 111);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.delete-product:hover {
+    color: white;
+    background-color: rgb(243, 85, 85);
+    border-color: rgb(243, 85, 85);
+}
+
+.update-product {
+    height: 30px;
+    width: 30px;
+    color: var(--color1);
+    background: none;
+    border: 1px solid var(--color1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.update-product:hover {
+    color: white;
+    background-color: var(--color1);
+    border-color: var(--color1);
+}
+
+
+.product-name {
+    color: var(--color1);
+    font-weight: bold;
+    text-decoration: none;
+    /*changed*/
+}
+
+.product-quantity {
+    color: var(--color1);
+    font-weight: bold;
+    width: 60px;
+    height: 45px;
+    border: 2px solid var(--color1);
+    border-radius: 5px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.product-quantity>input {
+    color: var(--color1);
+    width: 20px;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+.arrows-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.arrow {
+    font-size: 10px;
+    color: var(--color1);
+    cursor: pointer;
+}
+
+#cart-operations {
+    width: 80%;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bordercolor1);
+    align-items: center;
+    font-size: 16px;
+    color: var(--color5);
+    padding: 0 20px;
+}
+
+#cart-operations input {
+    height: 50px;
+    padding: 10px 20px;
+    color: var(--color5);
+    border: 1px solid var(--bordercolor1);
+    border-radius: 5px;
+    outline: none;
+}
+
+.add-to-cart-btn {
+    background-color: var(--bgcolor2);
+    color: var(--color1);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.contact-us-btn {
+    background-color: rgb(243, 85, 85);
+    color: var(--color3);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.add-to-cart-btn:hover,
+.contact-us-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.empty>span {
+    font-size: 20px;
+    color: var(--color7);
+}
+
+.empty>button {
+    padding: 15px 25px;
+    background-color: var(--color1);
+    color: var(--color3);
+    border: none;
+    border-radius: 5px;
+    transition: all 0.5s;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.empty>button:hover {
+    background-color: var(--color2);
+}

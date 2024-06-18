@@ -1,0 +1,144 @@
+#add-message {
+    max-height: 450px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 49% 49%;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 15px;
+    padding: 20px;
+    grid-row: 1/3;
+    border: 1px solid var(--bordercolor1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+#add-message>h2 {
+    grid-column: 1/3;
+    color: var(--color1);
+}
+
+
+#add-message>input,
+#add-message>select,
+#add-message>textarea {
+    padding: 15px;
+    border: 1px solid var(--bordercolor1);
+    border-radius: 5px;
+    outline: none;
+}
+
+#add-message>textarea{
+    grid-column: 1/span 2;
+}
+
+#add-message>button,
+.message>button {
+    width: fit-content;
+    height: 50px;
+    border: none;
+    color: var(--color3);
+    background-color: var(--color1);
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0 20px;
+    grid-column: 1/span 2;
+}
+
+#add-message>button:hover,
+.message>button:hover {
+    color: var(--color3);
+    background-color: var(--color2);
+}
+
+.message-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    justify-content: space-between;
+}
+
+.message {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid var(--bordercolor1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.message>h2 {
+    color: var(--headingcolor1);
+}
+
+.message>span {
+    color: var(--color7);
+}
+
+.check {
+    color: var(--color1);
+    font-size: 20px;
+}
+
+#contact {
+    height: 100%;
+    width: 38.5%;
+    /* padding: 20px; */
+    /* margin-top: 28px; */
+}
+
+.container {
+    width: 60%;
+    /* margin: 50px auto; */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 15px;
+}
+
+#mainsect {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+#mainsect h1,
+h2 {
+    color: var(--color1);
+}
+
+#mainsect p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#mainsect ul {
+    list-style: none;
+    padding: 0;
+}
+
+#mainsect li {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#mainsect li>span {
+    color: #555;
+}
+
+#mainsect a {
+    color: var(--color6);
+    text-decoration: none;
+}
+
+#mainsect a:hover {
+    text-decoration: underline;
+}
