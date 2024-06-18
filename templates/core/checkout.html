@@ -1,0 +1,122 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Checkout</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/checkout.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<div class="heading-banner-container">
+    <div class="heading-banner">
+        <div class="heading-banner-content">
+            <span class="heading">Checkout</span>
+            <p>There are <span id="paraspan">{{ totalcartitems }}</span> product{{ totalcartitems | pluralize:"s"}} in
+                your cart!</p>
+        </div>
+    </div>
+</div>
+
+<section class="checkout-container">
+    <form id="customer-details-checkout" method="POST">
+        <h2>Billing Details</h2>
+        {% csrf_token %}
+        <input type="text" name="full_name" placeholder="Full Name *" required
+            value="{{request.user.username | title}}" maxlength="100">
+        <input type="tel" name="phone" placeholder="Phone *" required value="{{active_address.mobile}}" min="60000000000" max="9999999999" minlength="10", maxlength="10">
+        <input type="email" name="email" placeholder="Email address *" required maxlength="100">
+
+        <input type="text" name="address" placeholder="Address *" required value="{{active_address.address}}" maxlength="100">
+        <input type="text" name="city" placeholder="City / Town *" required maxlength="100">
+        {% comment %} <input type="text" name="address2" placeholder="Address line 2"> {% endcomment %}
+        <input list="state" name="state" placeholder="State *" required maxlength="100">
+        <datalist id="state" name="state" required>
+            <option value="select state"></option>
+            <option value="s1"></option>
+            <option value="s2"></option>
+            <option value="s3"></option>
+        </datalist>
+
+        <input list="country" name="country" placeholder="Country *" required maxlength="100">
+        <datalist id="country" required>
+            <option value="select country"></option>
+            <option value="c1"></option>
+            <option value="c2"></option>
+            <option value="c3"></option>
+        </datalist>
+
+
+
+        <input type="number" name="pincode" placeholder="Postcode / ZIP *" required min="111111" max="999999">
+        <input type="hidden" name="customer-details-checkout">
+
+    </form>
+
+    <aside class="order">
+        <div id="order-heading">
+            <h2>Your Order</h2>
+            <span>Subtotal - <span>Rs. {{order.price | floatformat:2}}</span></span>
+        </div>
+
+        {% for o in order_items %}
+        <div class="cart-products">
+            <div class="product-img">
+                <img src="{{o.image }}" alt="product" height="70">
+            </div>
+            <a class="product-name" href="{% url 'core:product_detail' o.pid %}">{{ o.item }}</a>
+            <span class="product-price">Rs. {{ o.price }}</span>
+            <div class="product-quantity">
+                <i class="fa-solid fa-xmark"></i><span> {{ o.qty }}</span>
+            </div>
+            <span class="product-subtotal">Rs. {{ o.total }}</span>
+        </div>
+        {% endfor %}
+
+
+    </aside>
+
+    <div>
+        <div id="cart-operations">
+            <div id="coupon-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="code" placeholder="Enter Coupon Code..." maxlength="50" />
+                    <button type="submit" name="apply-coupon">Apply Coupon</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="place-back">
+            {% comment %} <button id="place-order">Place an Order </button> {% endcomment %}
+            {% comment %} {{paypal_payment_button.render}} {% endcomment %}
+            {% comment %} <div id="paypal-button-container"></div> {% endcomment %}
+            <button id="rzp-button1" type="submit" form="customer-details-checkout">Pay with Razorpay</button>
+            <button id="back" onclick="window.location.href = `{% url 'core:cart' %}`">Go back to cart </button>
+        </div>
+
+    </div>
+
+    <div id="cart-totals-container">
+        <h2>Order Summary</h2>
+        <div id="cart-totals">
+          <span id="subtotal">Subtotal</span>
+          <span id="subtotal-value">Rs. {{order.price | floatformat:2}}</span>
+          <span id="shipping">Shipping</span>
+          <div id="shipping-values">
+            <span>Free Shipping</span>
+            {% comment %} <span>Shipping to <span id="address">CA</span>.</span> {% endcomment %}
+            <span id="change-address"><a href="{% url 'core:dashboard' %}">Change address <i class="fa-solid fa-truck"></i></a></span>
+          </div>
+          <span id="discount">Discount</span>
+          <span id="discount-value">Rs. {{order.saved | floatformat:2}}</span>
+          <span id="total">Total</span>
+          <span id="total-value">Rs. {{order.total | floatformat:2}}</span>
+        </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Your Wishlist</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/wishlist.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+
+  <main id="wishlist-list">
+    <div class="heading-banner-container">
+      <div class="heading-banner">
+      <div class="heading-banner-content">
+        <span class="heading">Your Wishlist</span>
+        <p>There are <span id="paraspan">{{ wishlist.count }}</span> product{{ wishlist.count | pluralize:"s"}} in your wishlist!</p>
+      </div>
+      </div>
+    </div>
+
+    <section class="cart">
+    {% if wishlist %}
+      <div class="cart-products-heading">
+        <span id="product-name-heading">Product</span>
+        <span id="product-price-heading">Price</span>
+        <span id="product-stock-heading">Stock</span>
+        <span id="product-action-heading">Action</span>
+        {% comment %} <span id="product-refresh-heading">Refresh</span> {% endcomment %}
+        <span id="product-remove-heading">Remove</span>
+      </div>
+      {% endif %}
+
+      {% for w in wishlist %}
+      <div class="cart-products products-wrap" data-wishlist-product="{{ w.id }}">
+        
+        <div class="product">
+          <img src="{{ w.product.image.url }}" alt="product" height="70" />
+          <a href="{% url 'core:product_detail' w.product.pid %}" class="product-name">{{ w.product.title | truncatechars:30}}</a>
+        </div>
+        
+        <span class="product-price">Rs. {{ w.product.price | floatformat:2}}</span>
+        {% if w.product.in_stock%}
+        <span class="product-stock-true">In Stock</span>
+        {% else %}
+        <span class="product-stock-false">Out of Stock</span>
+        {% endif %}
+        
+        <span class="product-action">
+        {% if w.product.in_stock%}
+          <input type="hidden" id="quantity" class="quantity-{{ w.product.id }}"  value="1">
+          <input type="hidden" class="product-pid-{{ w.product.id }}"  value="{{ w.product.pid }}">
+          <input type="hidden" class="product-image-{{ w.product.id }}"  value="{{ w.product.image.url }}">
+          <input type="hidden" class="product-id-{{ w.product.id }}"  value="{{ w.product.id }}">
+          <input type="hidden" class="product-title-{{ w.product.id }}"  value="{{w.product.title }}">
+          <button id="add-to-cart-btn" class="add-to-cart-btn" data-index="{{ w.product.id }}">Add to Cart &nbsp;<i class="fa-solid fa-cart-shopping"></i> </button>
+        {% else %}
+          <button class="contact-us-btn">Contact Us</button>
+        {% endif %}
+        </span>
+        <button class="delete-wishlist-product" data-wishlist-product="{{ w.id }}">
+          {% comment %} <i class="fa-solid fa-xmark"></i> {% endcomment %}
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div> 
+      {% empty %}
+      <div class="empty">
+      <span>Nothing in wishlist!</span>
+      <button onclick="window.location.href = '{% url 'core:product_list' %}'">Go to Shop</button>
+      </div>
+      {% endfor %}
+
+    
+      </div>
+    </section>
+  </main>
+
+{% endblock main %}

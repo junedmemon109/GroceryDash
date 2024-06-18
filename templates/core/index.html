@@ -1,0 +1,177 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/index.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<section id="section1">
+    <div id="section1-left">
+        <ul id="category" type="none">
+            <h1>Category</h1>
+
+            {% for c in categories %}
+            <li>
+                <a href="{% url 'core:category_product_list' c.cid %}">
+                    <img src="{{c.image.url}}" />
+                    <span>{{c.title}}</span>
+                </a>
+                <div class="category-circle">{{c.category.count}}</div>
+            </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="section1-right">
+        <div class="slider">
+            <div class="slider-content active"
+                style="background-image: url({% static 'assets/imgs/banner-10-min.png' %})">
+                <div class="slider-banner-content">
+                    <span class="slider-title">Stay home and get your daily needs from our shop</span>
+
+                    <p>Start Your Daily Shopping with <span id="paraspan">GroceryDash</span></p>
+                    <button onclick="window.location.href = '{% url 'core:product_list' %}'">Shop Now</button>
+                </div>
+                <img src="{% static 'assets/imgs/banner-9-min.png' %}" alt="delivery-boy">
+            </div>
+
+            <div class="slider-content" style="background-image: url({% static 'assets/imgs/img2.png' %})">
+                <div class="slider-banner-content">
+                    <span class="slider-title">Stay home and get your daily needs from our shop</span>
+
+                    <p>Start Your Daily Shopping with <span id="paraspan">GroceryDash</span></p>
+
+                    <button onclick="window.location.href = '{% url 'core:product_list' %}'">Shop Now</button>
+
+                </div>
+            </div>
+            <!-- Add more slider-content divs for additional slides -->
+            <div class="slider-nav">
+                <div class="slider-circle active"></div>
+                <div class="slider-circle"></div>
+                <!-- Add more slider-circle divs for additional slides -->
+            </div>
+        </div>
+
+        <span id="popular-products-heading">Popular Products</span>
+
+        <div id="popular-products">
+
+            {% for p in products %}
+            <div class="products products-wrap" data-index="{{ p.id }}">
+                <div class="product-img">
+                    <a href="{% url 'core:product_detail' p.pid %}"><img src="{{ p.image.url }}" alt="product" height="200" /></a>
+                    {% comment %} <img src="" alt="" class="hover-img" /> {% endcomment %}
+                </div>
+                <div class="product-content">
+                    <p class="category-name">{{ p.category }}</p>
+                    <a href="{% url 'core:product_detail' p.pid %}" class="product-title">{{ p.title }}</a>
+                    <div class="rating">
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <span class="rating-value">&nbsp;{{p.avg_rating | floatformat:1}} &nbsp;({{p.review_count | floatformat:0}})</span>
+                    </div>
+                    
+                    {% if p.tags.all %}
+                    <p class="tag-name">Tags:
+                        <span>
+                            {% for tag in p.tags.all %}
+                            <a href="{% url 'core:tags' tag.slug%}" class="tag">#{{tag}}{% if not forloop.last %}, {% endif %}</a>
+                            {% endfor %}
+                        </span>
+                    </p>
+                    {% else %}
+                    <p></p>
+                    {% endif%}
+
+                    <div class="price-cart">
+                        <h3>Rs. <span class="price-{{p.id}}">{{p.price}}</span></h3>
+                        {% if p.price < p.old_price %}<h4 class="old-price">Rs. {{p.old_price}}</h4>{% endif %}
+                            <input type="hidden" id="quantity" class="quantity-{{ p.id }}" value="1">
+                            <input type="hidden" class="product-pid-{{ p.id }}" value="{{ p.pid }}">
+                            <input type="hidden" class="product-image-{{ p.id }}" value="{{ p.image.url }}">
+                            <input type="hidden" class="product-id-{{ p.id }}" value="{{ p.id }}">
+                            <input type="hidden" class="product-title-{{ p.id }}" value="{{ p.title }}">
+                    </div>
+                    <div class="buttons">
+                        <button id="add-to-cart-btn" class="add-to-cart-btn" data-index="{{ p.id }}">Add to cart
+                            &nbsp;<i class="fa-solid fa-cart-shopping"></i></button>
+                        <button id="add-to-wishlist-btn" class="add-to-wishlist-btn"
+                            data-product-item="{{ p.id }}"><span></span> <i class="fa-regular fa-heart"></i></button>
+
+                    </div>
+
+                </div>
+                {% if p.price < p.old_price %} 
+                <div class="discount"><span>-{{ p.get_percentage|floatformat:0 }}%</div>
+                {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+
+    </div>
+    </div>
+</section>
+
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let slides = document.querySelectorAll(".slider-content");
+            let circles = document.querySelectorAll(".slider-circle");
+            let currentSlide = 0;
+
+            // Set the first circle as active initially
+            circles[currentSlide].classList.add("active");
+
+            const slideInterval = setInterval(nextSlide, 5000); // Change slide every 3 seconds
+
+            function nextSlide() {
+                goToSlide((currentSlide + 1) % slides.length);
+            }
+
+            function goToSlide(n) {
+                slides[currentSlide].classList.remove("active");
+                circles[currentSlide].classList.remove("active");
+                currentSlide = n;
+                slides[currentSlide].classList.add("active");
+                circles[currentSlide].classList.add("active");
+            }
+
+            // Add click event listeners to circles
+            circles.forEach((circle, index) => {
+                circle.addEventListener("click", () => {
+                    goToSlide(index);
+                    clearInterval(slideInterval); // Stop the automatic sliding
+                });
+            });
+
+
+            var ratingElements = document.querySelectorAll(".rating");
+            ratingElements.forEach((ratingElement) => {
+                var ratingValue = parseFloat(ratingElement.querySelector(".rating-value").innerText);
+                var truncValue = Math.trunc(ratingValue);
+                var stars = ratingElement.querySelectorAll("i");
+
+                for (let i = 0; i < truncValue; i++) {
+                    stars[i].classList.remove("fa-regular");
+                    stars[i].classList.add("fa-solid");
+                }
+
+                if (ratingValue !== truncValue) {
+                    stars[truncValue].classList.remove("fa-regular");
+                    stars[truncValue].classList.add("fa-solid");
+                    stars[truncValue].classList.remove("fa-star");
+                    stars[truncValue].classList.add("fa-star-half-stroke");
+                }
+
+            });
+        });
+
+    </script>
+
+{% endblock main %}

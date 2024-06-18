@@ -1,0 +1,176 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Your Dashboard</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<div class="dashboard-container">
+    <div class="dashboard-options">
+
+        <button class="dashboard-btn active-dashboard" onclick="showContent(0)">Dashboard</button>
+        <button class="dashboard-btn" onclick="showContent(1)">Orders</button>
+        {% comment %} <button class="dashboard-btn" onclick="showContent(2)">Track Your Order</button> {% endcomment %}
+        <button class="dashboard-btn" onclick="showContent(2)">My Address</button>
+        <button class="dashboard-btn" onclick="showContent(3)">Profile</button>
+        {% comment %} <button class="dashboard-btn" onclick="showContent(4)">Account Details</button> {% endcomment %}
+        <button class="dashboard-btn" onclick="window.location.href='{% url 'userauths:change-password' %}'">Change Password</button>
+        <button class="dashboard-btn" onclick="window.location.href='{% url 'userauths:sign-out' %}'">Logout</button>
+        
+    </div>
+    <div class="dashboard-view">
+        <div class="dashboard-view-active">
+            <h1 id="dashbord-h1">Hello {{request.user | title}}!</h1>
+            <p id="dashbord-p">From your account dashboard, you can easily check & view your <span
+                    class="paraspan">recent orders,</span> manage your <span class="paraspan">shipping and billing
+                    address </span>and <span class="paraspan">edit your password and account details</span></p>
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
+        <div>
+            <div class="orders-container">
+                <h1>Your Orders</h1>
+
+                <div class="orders-heading">
+                    <span>Order</span>
+                    <span>Date</span>
+                    <span>Status</span>
+                    <span>Paid Status</span>
+                    <span>Total</span>
+                    <span>Actions</span>
+                </div>
+
+                {% for o in orders_list %}
+                <div class="orders" data-product="{{ product_id }}">
+
+                    <span>INVOICE_NO-{{o.id}}</span>
+                    <span>{{ o.order_date }}</span>
+                    <span>{{ o.product_status | title}}</span>
+                    {% if o.paid_status == "success" %}
+                    <i class="fa-regular fa-circle-check check"></i>
+                    {% else %}
+                    <i class="fa-regular fa-circle-xmark xmark"></i>
+                    {% endif %}
+                    <span>Rs. {{ o.price }}</span>
+                    <a href="{% url 'core:order-detail' o.id %}">view</a>
+
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+        {% comment %} <div>
+            <h1>Track Your Order</h1>
+        </div> {% endcomment %}
+
+        <div>
+
+            <form id="add-address" method="POST">
+                {% csrf_token %}
+                <h2>Add Address</h2>
+                <input type="text" name="address" placeholder="Address *" required maxlength="100">
+                <input type="tel" name="mobile" placeholder="Phone no *" required minlength="10" maxlength="10" min="6000000000" max="9999999999">
+                <button type="submit" name="add-address">Save Address</button>
+            </form>
+            <div class="address-container">
+                {% for a in address %}
+                <div class="address" data-address-id="{{ a.id }}">
+                    <h2>Address {{ forloop.counter }}</h2>
+                    <span>{{a.address}}</span>
+                    <span>{{a.mobile}}</span>
+                    {% if a.status %}
+                    <i class="fa-regular fa-circle-check check check-{{ a.id }}" data-address-id="{{ a.id }}"></i>
+                    <button data-address-id="{{ a.id }}" style="display:none;"
+                        class="make-default-address button-{{ a.id }} action_btn">Make Default</button>
+                    {% else %}
+                    <button data-address-id="{{ a.id }}" class="make-default-address button-{{ a.id }} action_btn">Make
+                        Default</button>
+                    <i class="fa-regular fa-circle-check check check-{{ a.id }}" data-address-id="{{ a.id }}"
+                        style="display:none;"></i>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% comment %} <div>
+            <h1>Account Details</h1>
+        </div> {% endcomment %}
+        <div>
+            {% comment %} <div>
+                {% if user_profile.image %}
+                <span><img src="{{user_profile.image.url}}" alt=""></span>
+                {% else %}
+                <span><img src="{% static 'assets/imgs/user.png' %}" alt=""></span>
+                {% endif %}
+            </div> {% endcomment %}
+
+            <form id="add-address" method="POST">
+                {% csrf_token %}
+                <h2>Profile</h2>
+                <input type="text" name="full_name" {% if profile.full_name %} value="{{profile.full_name}}"{% endif %} placeholder="Full name *" required maxlength="100">
+                <input type="tel" name="phone" {% if profile.phone %} value="{{profile.phone}}" {% endif %}placeholder="Phone no *" required minlength="10" maxlength="10" min="6000000000" max="9999999999">
+                <input type="email" name="email" value="{{request.user.email}}" disabled>
+
+                <button type="submit" name="update-profile">Update Profile</button>
+                {% if profile.verified %}
+                <span>verified <i class="fa-regular fa-circle-check check"></i></span>
+                {% endif %}
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    function showContent(index) {
+        const views = document.querySelectorAll('.dashboard-view > div');
+        const buttons = document.querySelectorAll('.dashboard-btn');
+
+        views.forEach(view => view.classList.remove('dashboard-view-active'));
+        buttons.forEach(button => button.classList.remove('active-dashboard'));
+
+        views[index].classList.add('dashboard-view-active');
+        buttons[index].classList.add('active-dashboard');
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ month | safe}},
+            datasets: [{
+                label: 'Orders',
+                data: {{ total_orders | safe}},
+                borderWidth: 1,
+                backgroundColor: "#d8f1e5",
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+    });
+    
+</script>
+
+{% endblock %}

@@ -1,0 +1,290 @@
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Payment Completed</title>
+		<link rel="shortcut icon" type="image/png" href="{% static 'assets/imgs/favicon.png' %}">
+		<style>
+        /* reset */
+
+*
+{
+	border: 0;
+	box-sizing: content-box;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	vertical-align: top;
+}
+
+:root {
+            --color1: #3bb77e;
+            --color2: #fdc040;
+            --color3: white;
+            --color4: #333333;
+            --color5: #7e7e7e;
+            --color6: #29a56c;
+            --color7: #adadad;
+            --color8: #ff0000;
+            --bordercolor1: #ececec;
+            --bordercolor2: #bce3c9;
+            --bordercolor3: #f3f3f3;
+            --headingcolor1: #253d4e;
+            --bgcolor1: var(--bordercolor2);
+            --bgcolor2: #def9ec;
+            --bgcolor3: #f4f6fa;
+        
+        --color-success: #3c763d;
+    --color-success-bg: #dff0d8;
+    --color-success-border: #d6e9c6;
+
+    --color-info: #31708f;
+    --color-info-bg: #d9edf7;
+    --color-info-border: #bce8f1;
+
+    --color-warning: #8a6d3b;
+    --color-warning-bg: #fcf8e3;
+    --color-warning-border: #faebcc;
+
+    --color-danger: #a94442;
+    --color-danger-bg: #f2dede;
+    --color-danger-border: #ebccd1;
+}
+
+/* heading */
+
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+
+/* table */
+
+table { font-size: 75%; table-layout: fixed; width: 100%;}
+{% comment %} table { border-collapse: separate; border-spacing: 2px; } {% endcomment %}
+table { border-collapse: collapse; border-spacing: 0px; }
+th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+{% comment %} th, td { border-radius: 0.25em; border-style: solid; } {% endcomment %}
+th, td {border-style: solid; }
+th { background: var(--bordercolor2); border-color: var(--bordercolor3); }
+td { border-color: var(--bordercolor3); }
+
+/* page */
+
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
+html { background: #999; cursor: default; }
+
+body { box-sizing: border-box; height: 11in; margin: 0 auto; overflow: hidden; padding: 0.5in; width: 8.5in; }
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+
+/* header */
+
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+
+header h1 { background: var(--color1); border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: right; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; } 
+
+header address p { margin: 0 0 0.25em; }
+{% comment %} header span, header img { display: block; float: right; } {% endcomment %}
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+header input { cursor: pointer; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%; }
+
+/* article */
+
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+
+
+
+
+
+/* table meta & balance */
+table.meta { width: 36%; }
+table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+article>p{
+	color: var(--color1);
+	font-weight: bold;
+	clear:right;
+}
+article address { clear:right; line-height: 20px; font-size: 75%;}
+
+/* table meta */
+
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+
+/* table items */
+
+table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+
+table.inventory td:nth-child(1) { width: 52%; }
+table.inventory td:nth-child(2) { text-align: right; width: 16%; }
+table.inventory td:nth-child(3) { text-align: right; width: 16%; }
+table.inventory td:nth-child(4) { text-align: right; width: 16%; }
+
+/* table balance */
+
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+
+/* aside */
+
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+aside p { text-align: center; font-size: 75%;}
+
+@media print {
+	* { -webkit-print-color-adjust: exact; }
+	html { background: none; padding: 0; }
+	body { box-shadow: none; margin: 0; }
+	span:empty { display: none; }
+	button {display: none;}
+}
+
+#buttons{
+	margin-top: 50px;
+	width: 100%;
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+}
+
+button{
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--color1);
+      color: var(--color3);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.5s;
+    }
+
+    button:hover {
+      background-color: var(--color2);
+    }
+
+@page { margin: 0; }
+        
+        </style>
+	</head>
+	<body>
+		<header>
+			<h1>Invoice</h1>
+			<span><img alt="logo" src="{% static 'assets/imgs/logo.png' %}" height="80"></span>
+			<address>
+				<p>GroceryDash</p>
+				<p>100, Anand, Gujarat</p> 
+				<p>India</p>
+			</address>
+			
+		</header>
+		<article>
+			
+			<table class="meta">
+				<tr>
+					<th><span>Order Id</span></th>
+					<td><span>{{oid}}</span></td>
+				</tr>
+				<tr>
+					<th><span>Date & Time</span></th>
+					<td><span>{{ date }}</span></td>
+				</tr>
+				
+			</table>
+			<table class="inventory">
+				<thead>
+					<tr>
+						<th><span>Item</span></th>
+						<th><span>Price</span></th>
+						<th><span>Quantity</span></th>
+						<th><span>Amount</span></th>
+					</tr>
+				</thead>
+				<tbody>
+                {% for item in data %}
+					<tr>
+						<td><span>{{item.item}}</span></td>
+						<td><span>Rs. {{item.price}}</span></td>
+						<td><span>{{item.qty}}</span></td>
+						<td><span>Rs. {{item.total}}</span></td>
+					</tr>
+                {% endfor %}
+				</tbody>
+			</table>
+			<table class="balance">
+				<tr>
+					<th><span>Subtotal</span></th>
+					<td>Rs. <span>{{ total_amount }}</span></td>
+				</tr>
+				{% comment %} <tr>
+					<th><span>Tax</span></th>
+					<td>Rs. <span>0.00</span></td>
+				</tr> {% endcomment %}
+				<tr>
+					<th><span>Total</span></th>
+					<td>Rs. <span>{{ total_amount }}</span></td>
+				</tr>
+				
+			</table>
+			<p id="invoicefor">Invoice for</p>
+			<address>
+				<p>{{ request.user | title }}</p>
+				<p>{{active_address.address}}</p>
+				<p>{{active_address.mobile}}</p>
+			</address>
+		</article>
+		<aside>
+			<h1><span></span></h1>
+			<div>
+				<p>Note: This is computer generated receipt and does not require physical signature.</p>
+				
+			</div>
+		</aside>
+
+		<div id="buttons">
+			<button onclick="window.print()">Print</button>
+			<a id="downloadLink" download="invoice.pdf"><button>Download</button></a>
+		</div>
+	
+
+	<script>
+    // Function to download the invoice as PDF
+    function downloadPDF() {
+        // Get the body element
+        const invoice = document.querySelector('body');
+        
+        // Clone the invoice element
+        const clonedInvoice = invoice.cloneNode(true);
+
+        // Remove the buttons from the cloned invoice
+        const buttons = clonedInvoice.querySelector('#buttons');
+        buttons.remove();
+
+        // Configuration for PDF generation
+        const opt = {
+            margin: 0,
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } // Set format to 'a4' and orientation to 'portrait'
+        };
+
+        // Generate and save the PDF
+        html2pdf().from(clonedInvoice).set(opt).save();
+    }
+    document.getElementById('downloadLink').addEventListener('click', downloadPDF);
+</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+		</body>
+	
+</html>

@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+<body>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{razorpay_key}}", // Enter the Key ID generated from the Dashboard
+    "amount": "{{payment.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "GroceryDash", //your business name
+    "description": "Test Transaction",
+    "image": "{% static 'assets/imgs/favicon.png' %}",
+    "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "http://127.0.0.1:8000/razorpay/callback/",
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com", 
+        "contact": "9000090000"  //Provide the customer's phone number for better conversion rates 
+    },
+    
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    },
+    {% comment %} "options": {
+    "checkout": {
+      "method": {
+        "netbanking": "1",
+        "card": "1",
+        "upi": "1",
+        "wallet": "1"
+      }
+    }
+  }  {% endcomment %}
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+    const callbackUrl = 'http://127.0.0.1:8000/razorpay/callback/';
+
+    // Extract the relevant information about the failed payment
+    const errorCode = response.error.code;
+    const errorDescription = response.error.description;
+    const errorSource = response.error.source;
+    const errorStep = response.error.step;
+    const errorReason = response.error.reason;
+    const paymentId = response.error.metadata.payment_id;
+    const orderId = response.error.metadata.order_id;
+
+    // Create a payload object with the failed payment information
+    const payload = {
+        error_code: errorCode,
+        error_description: errorDescription,
+        error_source: errorSource,
+        error_step: errorStep,
+        error_reason: errorReason,
+        payment_id: paymentId,
+        order_id: orderId
+    };
+
+    // Send a POST request to the callback URL with the payload as JSON data
+    fetch(callbackUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            // If the response is successful, redirect to the payment failed page with the order ID
+            window.location.href = `http://127.0.0.1:8000/payment-failed/${orderId}/`;
+        } else {
+            console.error('Failed to send POST request');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+{% comment %} rzp1.on('payment.failed', function (response){
+        window.location.href = `http://127.0.0.1:8000/razorpay/callback/`
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+}); {% endcomment %}
+rzp1.open();
+    
+
+</script>
+</body>
+</html>

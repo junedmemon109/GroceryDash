@@ -1,0 +1,63 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Contact Us</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/contact.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<section id="mainsect">
+    <div class="container">
+        <h1>Contact Us</h1>
+
+        <div>
+            <h2>Customer Support</h2><br>
+            <p>For assistance with orders, product inquiries, or any other customer service-related issues, our
+                dedicated support team is available to help you.</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:support@grocerydash.com">support@grocerydash.com</a></li>
+                <li><strong>Phone:</strong> <span>1-800-123-4567 (Monday to Saturday, 9:00 am - 5:00 pm IST)</span></li>
+            </ul>
+        </div>
+
+        <div>
+            <h2>Visit Us</h2><br>
+            <p>If you prefer to speak with us in person or visit our physical location, you can find us at:</p>
+            <p>GroceryDash<br>
+                100, Anand, Gujarat<br>
+                India</p>
+        </div>
+
+        <div>
+            <h2>Feedback</h2><br>
+            <p>We value your feedback and strive to continuously improve our products and services. If you have any
+                suggestions, comments, or ideas, please send them to <a href="mailto:feedback@grocerydash.com">
+                feedback@grocerydash.com</a>.
+            </p>
+
+        </div>
+    </div>
+
+    <div id="contact">
+
+        <form id="add-message" method="POST">
+            {% csrf_token %}
+            <h2>Contact Form</h2>
+            <input type="text" name="full_name" placeholder="Full name *" required maxlength="100">
+            <input type="email" name="email" placeholder="Email *" required maxlength="100">
+            <input type="tel" name="phone" placeholder="Phone no *" required minlength="10" maxlength="10" min="6000000000" max="9999999999">
+            <input type="text" name="subject" placeholder="Subject *" required maxlength="100">
+            <textarea name="message" placeholder="Write your messsage here... *" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+    </div>
+</section>
+
+{% endblock main %}

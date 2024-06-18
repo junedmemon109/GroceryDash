@@ -1,0 +1,89 @@
+<main id="cart-list">
+    <div class="heading-banner-container">
+      <div class="heading-banner">
+      <div class="heading-banner-content">
+        <span class="heading">Your Cart</span>
+        <p>There are <span id="paraspan">{{ totalcartitems }}</span> product{{ totalcartitems | pluralize:"s"}} in your cart!</p>
+      </div>
+      </div>
+    </div>
+
+    <section class="cart">
+    {% if  cart_data.items %}
+      <div class="cart-products-heading">
+        <span id="product-name-heading">Product</span>
+        <span id="product-price-heading">Price</span>
+        <span id="product-quantity-heading">Quantity</span>
+        <span id="product-subtotal-heading">Subtotal</span>
+        {% comment %} <span id="product-refresh-heading">Refresh</span> {% endcomment %}
+        <span id="product-remove-heading">Remove</span>
+      </div>
+      {% endif %}
+
+      {% for product_id, item in cart_data.items%}
+      <div class="cart-products" data-product="{{ product_id }}">
+        
+        <div class="product">
+          <img src="{{ item.image }}" alt="product" height="70" />
+          <a href="{% url 'core:product_detail' item.pid %}" class="product-name">{{ item.title }}</a>
+        </div>
+        
+        <span class="product-price">Rs. {{ item.price | floatformat:2}}</span>
+        <div class="product-quantity">
+          <input type="text" value="{{ item.qty }}" readonly class="qty product-qty-{{ product_id }}"/>
+          <div class="arrows-container">
+            <i class="fa-solid fa-chevron-up arrow up"></i>
+            <i class="fa-solid fa-chevron-down arrow down"></i>
+          </div>
+        </div>
+        <span class="product-subtotal">Rs. {% widthratio item.price 1 item.qty %} </span>
+        {% comment %} <button class=" update-product" data-product="{{ product_id }}">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button> {% endcomment %}
+        <button class="delete-product" data-product="{{ product_id }}">
+          {% comment %} <i class="fa-solid fa-xmark"></i> {% endcomment %}
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div> 
+      {% empty %}
+      <div class="empty">
+      <span>Nothing in cart!</span>
+      <button onclick="window.location.href = '{% url 'core:product_list' %}'">Shop Now</button>
+      </div>
+      {% endfor %}
+
+
+      {% if  cart_data.items %}
+      {% comment %} <div id="cart-operations">
+        <div id="coupon-container">
+          <input type="text" placeholder="Coupon Code" />
+          <button>Apply Coupon</button>
+        </div> 
+        <button id="empty-cart">Empty Cart</button>
+      </div> {% endcomment %}
+
+      <div id="cart-totals-container">
+        <h2>Cart totals</h2>
+        <div id="cart-totals">
+          <span id="subtotal">Subtotal</span>
+          <span id="subtotal-value">Rs. {{ cart_total_amount | floatformat:2 }}</span>
+          <span id="shipping">Shipping</span>
+          <div id="shipping-values">
+            <span>Free Shipping</span>
+            {% comment %} <span>Shipping to <span id="address">CA</span>.</span> {% endcomment %}
+            <span id="change-address"><a href="{% url 'core:dashboard' %}">Change address <i class="fa-solid fa-truck"></i></a></span>
+          </div>
+          <span id="total">Total</span>
+          <span id="total-value">Rs. {{ cart_total_amount | floatformat:2 }}</span>
+        </div>
+
+        {% if totalcartitems %}
+        <div id="proceed-checkout">
+          <button id="proceed-checkout-btn" onclick="window.location.href = '{% url 'core:checkout' %}'">Proceed to checkout</button>
+        </div>
+        {% endif %}
+        
+      </div>
+      {% endif %}
+    </section>
+    </main>

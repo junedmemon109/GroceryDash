@@ -1,0 +1,26 @@
+{% extends '../base.html' %} 
+{% load static %} 
+
+{% block title %}
+<title>Payment Failed</title>
+{% endblock title %} 
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/payment-failed.css' %}" />
+{% endblock css %} 
+
+{% block main %}
+
+<section id="paymentfailed-container">
+  <div>
+    <i class="fa-solid fa-triangle-exclamation fa-beat-fade"></i>
+    <h1>Oops! Something Went Wrong With Your Payment</h1>
+    <div id="paymentfailed-content">
+      <p>Payment Id: {{ order.razor_pay_payment_id }}</p>
+      <p>Order Id: {{ order.razor_pay_order_id }}</p>
+    </div>
+    <button onclick="location.href=`{% url 'core:payment' %}?oid={{order.oid}}`">Retry Payment</button>
+  </div>
+</section>
+
+{% endblock main %}

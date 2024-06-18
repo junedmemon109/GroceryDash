@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Login</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/sign-in-up.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+
+<div class="sign-in-up-container">
+  <form method="POST">
+    <h2>Login</h2>
+
+    {% if form.errors %}
+    <div class="alert alrt-danger">
+      <strong>{{form.errors}}</strong>
+    </div>
+    {% endif %}
+
+    {% csrf_token %}
+    <input type="text" name="email" placeholder="Username or Email *" required maxlength="100">
+    <input type="password" name="password" placeholder="Password *" required maxlength="128">
+    <button type="submit">Login</button>
+
+  </form>
+</div>
+
+{% endblock main %}

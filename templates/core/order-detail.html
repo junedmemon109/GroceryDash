@@ -1,0 +1,63 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Your Dashboard</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'assets/css/order-detail.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+    <div class="dashboard-container">
+    <div class="dashboard-options">
+        
+        <button class="dashboard-btn" onclick="location.href=`{% url 'core:dashboard' %}`">View Dashboard</button>
+        <button class="dashboard-btn active-dashboard">Order Details</button>
+        <button class="dashboard-btn" onclick="location.href=`{% url 'userauths:sign-out' %}`">Logout</button>
+        
+    </div>
+
+    <div class="dashboard-view">
+        
+        <div class="dashboard-view-active">
+        <div class="orders-container">
+
+            <div class="orders-heading">
+                <span>Order INV</span>
+                <span>Image</span>
+                <span>Title</span>
+                <span>Price</span>
+                <span>Qty</span>
+                <span>Total</span>
+            </div>
+
+            {% for o in order_items %}
+                <div class="orders" data-product="{{ product_id }}">
+        
+                <span>INV-{{o.id}}</span>
+                <img src="{{ o.image }}" alt="product" height="70" /> 
+                <span>{{ o.item }}</span>
+                <span>Rs. {{ o.price }}</span>
+                <span>{{ o.qty }}</span>
+                <span>Rs. {{ o.total }}</span>
+                
+        
+        
+                </div> 
+            {% endfor %}
+            
+
+        </div>
+        </div>
+        
+      
+    </div>
+    </div>
+
+   
+
+    
+{% endblock main %}
